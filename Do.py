@@ -13,11 +13,6 @@ class Task:
     def to_string(self):
         return(f'Task:{self.title}, Priorety:{self.priorety}, Status:{self.status}')
 
-#Task1 = Task('A', 'Hight','Not completed')
-#Tasks.append(Task1)
-#Task2 = Task('B', 'Medium', 'Completed')
-#Tasks.append(Task2)
-
 print('1. List of tasks(list): \n' 
       '---------------------- \n'
       '2. Add new task(add): \n'
