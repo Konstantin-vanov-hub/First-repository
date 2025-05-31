@@ -69,37 +69,37 @@ def get_entry():
         def dollar_to_euro():
             result_euro = round((text) * rate_dollar_to_euro, 2)
             return result_euro
-        result_output.config(text=dollar_to_euro())
+        result_output.config(text=f'{dollar_to_euro()}€')
 
     if a == 'Dollar' and b == 'Ruble':
         def dollar_to_rubles():
             result_rub = round(data_dollar *  text, 2)
             return result_rub
-        result_output.config(text=dollar_to_rubles())
+        result_output.config(text=f'{dollar_to_rubles()}₽')
 
     if a == 'Euro' and b == 'Dollar':
         def euro_to_dollar():
             result_dollar = round(rate_euro_to_dollar * text, 2)
             return result_dollar
-        result_output.config(text=euro_to_dollar())
+        result_output.config(text=f'{euro_to_dollar()}$')
 
     if a == 'Euro' and b =='Ruble':
         def euro_to_ruble():
             result_rub = round(data_euro * text, 2)
             return result_rub
-        result_output.config(text=euro_to_ruble())
+        result_output.config(text=f'{euro_to_ruble()}₽')
 
     if a == 'Ruble' and b == 'Dollar':
         def ruble_to_dollar():
             result_dollar = round(text/data_dollar, 2)
             return result_dollar
-        result_output.config(text=ruble_to_dollar())
+        result_output.config(text=f'{ruble_to_dollar()}$')
 
     if a == 'Ruble' and b == 'Euro':
         def ruble_to_euro():
             result_euro = round(text/data_euro, 2)
             return result_euro
-        result_output.config(text=ruble_to_euro())
+        result_output.config(text=f'{ruble_to_euro()}€')
 
 btn_main = tk.Button(root, text='Convert',font=default_font,width=20, command=get_entry)
 btn_main.pack(side='bottom', pady=(0, 20))
