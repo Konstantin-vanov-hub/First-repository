@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import tkinter as tk
+from tkinter import ttk
 
 url_usd = 'https://www.banki.ru/products/currency/usd/'
 url_euro = 'https://www.banki.ru/products/currency/cash/eur/moskva/'
@@ -10,45 +12,95 @@ soup_usd = BeautifulSoup(response_usd.text, 'lxml')
 response_euro = requests.get(url_euro)
 soup_euro = BeautifulSoup(response_euro.text, 'lxml')
 
-
 data_dollar = float(soup_usd.find('div', class_= 'Text__sc-vycpdy-0 jBQTbF').text.replace('₽', '').replace(',', '.'))
 data_euro = float(soup_euro.find('div', class_= 'Text__sc-vycpdy-0 jBQTbF').text.replace('₽', '').replace(',', '.'))
-
-print(f'    Exchange rate:')
-print(f'    1 $ = {data_dollar} ₽')
-print(f'    1 € = {data_euro} ₽')
-print('---------------------')
 
 rate_euro_to_dollar = round(data_euro/data_dollar, 2)
 rate_dollar_to_euro = round(data_dollar/data_euro, 2)
 
+root = tk.Tk()
+root.title("Currency Converter")
+root.geometry("500x400")  
 
-while True:
-    try:
-        currency = input('Enter the currency: ').lower()
+currensy = ['Dollar', 'Euro', 'Ruble']
+default_font = ("Arial", 10)
 
-        if currency == 'dollar':
-            count = float(input('Amount in dollars: '))
-            result_rub = round(data_dollar *  count, 2)
-            result_euro = round(count * rate_dollar_to_euro, 2)
-            print(f'Amount in rubles: {result_rub}')
-            print(f'Amount in euro: {result_euro}')
+bottom_frame = tk.Frame(root)
+bottom_frame.pack(side='bottom', pady=10)
 
-        elif currency == 'euro':
-            count = float(input('Amount in euro: '))
-            result_rub = round(data_euro * count, 2)
-            result_dollar = round(rate_euro_to_dollar * count, 2)
-            print(f'Amount in rubles: {result_rub}')
-            print(f'Amount in dollars: {result_dollar}')
+result_label_summa = tk.Label(root, text='Value:',font=default_font)
+result_label_summa.pack()
 
-        elif currency == 'rubles':
-            count = int(input('Amount in rubles: '))
-            result_dollar = round(count/data_dollar, 2)
-            result_euro = round(count/data_euro, 2)
-            print(f'Amount in dollars: {result_dollar}')
-            print(f'Amount in euro: {result_euro} ')
+entry = tk.Entry(root, width=30, font=default_font)
+entry.pack(pady=(10, 5))
 
-        elif currency == 'exit':
-            break
-    except ValueError:
-        print('Invalid value')  
+result_label_from = tk.Label(root, text='From:',font=default_font)
+result_label_from.pack()
+
+combobox1 = ttk.Combobox(values=currensy, width=28, font=default_font)
+combobox1.pack(pady=5)
+
+result_label_to = tk.Label(root, text='To:',font=default_font)
+result_label_to.pack()
+
+combobox2 = ttk.Combobox(values=currensy, width=28, font=default_font)
+combobox2.pack(pady=5)
+
+result_label_title = tk.Label(root, text='RATE:',font=default_font)
+result_label_title.pack()
+result_label_dollar = tk.Label(root, text=f'1$ = {data_dollar}₽',font=default_font)
+result_label_euro = tk.Label(root,text=f'1€ = {data_euro}₽',font=default_font)
+result_label_dollar.pack(pady=(5,0))
+result_label_euro.pack(pady=(5,0))
+
+result_label_title = tk.Label(root, text='RESULT:',font=default_font)
+result_label_title.pack()
+result_output = tk.Label(root, text='',font=default_font)
+result_output.pack()
+
+
+def get_entry():
+    text = int(entry.get())
+    a = combobox1.get()
+    b = combobox2.get()
+    
+
+    if a == 'Dollar' and b == 'Euro':
+        def dollar_to_euro():
+            result_euro = round((text) * rate_dollar_to_euro, 2)
+            return result_euro
+        result_output.config(text=dollar_to_euro())
+
+    if a == 'Dollar' and b == 'Ruble':
+        def dollar_to_rubles():
+            result_rub = round(data_dollar *  text, 2)
+            return result_rub
+        result_output.config(text=dollar_to_rubles())
+
+    if a == 'Euro' and b == 'Dollar':
+        def euro_to_dollar():
+            result_dollar = round(rate_euro_to_dollar * text, 2)
+            return result_dollar
+        result_output.config(text=euro_to_dollar())
+
+    if a == 'Euro' and b =='Ruble':
+        def euro_to_ruble():
+            result_rub = round(data_euro * text, 2)
+            return result_rub
+        result_output.config(text=euro_to_ruble())
+
+    if a == 'Ruble' and b == 'Dollar':
+        def ruble_to_dollar():
+            result_dollar = round(text/data_dollar, 2)
+            return result_dollar
+        result_output.config(text=ruble_to_dollar())
+
+    if a == 'Ruble' and b == 'Euro':
+        def ruble_to_euro():
+            result_euro = round(text/data_euro, 2)
+            return result_euro
+        result_output.config(text=ruble_to_euro())
+
+btn_main = tk.Button(root, text='Convert',font=default_font,width=20, command=get_entry)
+btn_main.pack(side='bottom', pady=(0, 20))
+root.mainloop()
