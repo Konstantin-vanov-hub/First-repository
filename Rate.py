@@ -51,4 +51,4 @@ while True:
         elif currency == 'exit':
             break
     except ValueError:
-        print('Invalid value')
+        print('Invalid value')  
