@@ -60,9 +60,12 @@ result_output.pack()
 
 
 def get_entry():
-    text = int(entry.get())
-    a = combobox1.get()
-    b = combobox2.get()
+    try:
+        text = int(entry.get())
+        a = combobox1.get()
+        b = combobox2.get()
+    except ValueError:
+        result_output.config(text='Invalid value')
     
 
     if a == 'Dollar' and b == 'Euro':
